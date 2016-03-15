@@ -38,25 +38,25 @@ str(Datafixr)
 
 # Models for prediction
 # Tree using function C5.0
-mt <- C5.0(Datafixr[1:36,-11], Datafixr[1:36,11])
-summary(mt)
-plot(mt)
+Tree1 <- C5.0(Datafixr[1:36,-11], Datafixr[1:36,11])
+summary(Tree1)
+plot(Tree1)
 # Test the model 
-pt <- predict(mt, Datafixr[37:51,])
+pt <- predict(Tree1, Datafixr[37:51,])
 pt
-testtable <- table(Datafixr[37:51,11],pt)
-testtable
 Datapred1 <- Datafixr[37:51,]
 Datapred1$Prediction <- pt
+testtable1 <- table(Datafixr[37:51,11],pt)
+testtable1
 
 # Tree using function tree
-Tree1 <- tree(HUBCATEGORY ~ NPAS + AREAIR + CPOP + M50 + ACCON + NAIRL + OPER + NDES + IDES + NTER,data = Datafixr[1:36,])
-summary (Tree1)
-plot(Tree1);text(Tree1, cex = 0.9)
-Datatest1 <- Datafixr
-Pred1 <- predict(Tree1,Datatest1[37:51,])
-Pred1
-Datatest1 <- data.frame(Datatest1[37:51,],Pred1)
-Datatest1$Predicted <- ifelse(Datatest1$Hub>0.5,"Hub","Non-hub")
-testtable1 <- table(Datatest1[,11],Datatest1[,14])
-testtable1
+Tree2 <- tree(HUBCATEGORY ~ NPAS + AREAIR + CPOP + M50 + ACCON + NAIRL + OPER + NDES + IDES + NTER,data = Datafixr[1:36,])
+summary (Tree2)
+plot(Tree2);text(Tree2, cex = 0.9)
+Datatest2 <- Datafixr
+Pred2 <- predict(Tree2,Datatest2[37:51,])
+Pred2
+Datatest2 <- data.frame(Datatest2[37:51,],Pred2)
+Datatest2$Predicted <- ifelse(Datatest2$Hub>0.5,"Hub","Non-hub")
+testtable2 <- table(Datatest2[,11],Datatest2[,14])
+testtable2

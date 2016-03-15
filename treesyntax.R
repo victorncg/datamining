@@ -1,9 +1,7 @@
-# Project
 # Load dataset
-setwd ("C:/Users/Victor/Dropbox/NEU/Project/Dissertation")
+setwd ("C:/Users/Victor/~")
 
 Data <- read.csv("Data.csv")
-row.names(Data) <- Data$Airport
 
 # Create categorical variable based on binary variable
 index <- c(0,1)
@@ -17,23 +15,7 @@ attach (Data)
 
 #====================================================================================
 # Decision trees
-Data$HUB <- NULL
-Data$Airport <- NULL
-Data$Major.city.served <- NULL
-Data$State <- NULL
-Data$NHUB <- NULL
-#Data$M50 <- NULL
-Data$M100 <- NULL
-Data$M200 <- NULL
-Data$AIO <- NULL
-#Data$AREAIR <- NULL
-Data$CITYA <- NULL
-Data$NRUN <- NULL
-#Data$ACCON <- NULL
-Data$GDP <- NULL
-
-
-# Transform other variables from integer to numeric type
+# Transform variables from integer to numeric type
 Datafix <- transform(Data,NPAS = as.numeric(NPAS),
                      AREAIR = as.numeric(AREAIR),
                      CPOP = as.numeric(CPOP),  
@@ -45,15 +27,17 @@ Datafix <- transform(Data,NPAS = as.numeric(NPAS),
                      ACCON = as.numeric(ACCON), M50 = as.numeric(M50)
                      )
 
-
+# Randomize the data
 set.seed(9850)
 g <- runif(nrow(Datafix))
 Datafixr <- Datafix[order(g),]
+
+# Verify the structure of the data
 str(Datafixr)
 
 
 # Models for prediction
-# Creating model using training data
+# Tree using function C5.0
 mt <- C5.0(Datafixr[1:36,-11], Datafixr[1:36,11])
 summary(mt)
 plot(mt)
@@ -65,10 +49,7 @@ testtable
 Datapred1 <- Datafixr[37:51,]
 Datapred1$Prediction <- pt
 
-
-
-# Trees for prediction
-# Tree 1 using tree()
+# Tree using function tree
 Tree1 <- tree(HUBCATEGORY ~ NPAS + AREAIR + CPOP + M50 + ACCON + NAIRL + OPER + NDES + IDES + NTER,data = Datafixr[1:36,])
 summary (Tree1)
 plot(Tree1);text(Tree1, cex = 0.9)
